@@ -98,7 +98,7 @@ import {
 // --- 1. KONFIGURASYON VE SABİTLER ---
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAuR87uUfc3a5Jm1B3JkYp5JB9rAQkG7XA',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: 'harrison-daily.firebaseapp.com',
   projectId: 'harrison-daily',
   storageBucket: 'harrison-daily.appspot.com',
@@ -111,7 +111,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app); // Memur burada ✅
 const appId = 'harrison-daily-v1'; // Kimlik kartı burada ✅
-const apiKey = 'AIzaSyAxckgkWk8VvTcYLWrdpl18VY2iYjJowNY'; // Anahtar burada ✅
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY; // Anahtar burada ✅
 
 const CATEGORIES = [
   'Tümü',
