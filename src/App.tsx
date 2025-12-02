@@ -200,7 +200,7 @@ const generateMedicalContent = async (category, specificTopic = null) => {
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=AIzaSyAxckgkWk8VvTcYLWrdpl18VY2iYjJowNY`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyAxckgkWk8VvTcYLWrdpl18VY2iYjJowNY`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -233,7 +233,7 @@ const generateQuizQuestion = async (topicTitle, topicContent) => {
   )}. TUS formatında zor bir soru hazırla. JSON: { "question": "...", "options": ["A)...", "B)...", "C)...", "D)...", "E)..."], "correctAnswer": 0, "explanation": "..." }`;
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=AIzaSyAxckgkWk8VvTcYLWrdpl18VY2iYjJowNY`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyAxckgkWk8VvTcYLWrdpl18VY2iYjJowNY`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -287,7 +287,7 @@ const generateDifferentialDiagnosis = async (articleContent) => {
   )}`;
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=AIzaSyAxckgkWk8VvTcYLWrdpl18VY2iYjJowNY`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyAxckgkWk8VvTcYLWrdpl18VY2iYjJowNY`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -308,7 +308,7 @@ const askGeminiAboutCase = async (articleContent, question) => {
   )}. Soru: "${question}". Kısa, net cevapla.`;
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=AIzaSyAxckgkWk8VvTcYLWrdpl18VY2iYjJowNY`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyAxckgkWk8VvTcYLWrdpl18VY2iYjJowNY`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
