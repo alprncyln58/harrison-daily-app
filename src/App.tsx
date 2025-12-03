@@ -111,7 +111,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app); // Memur burada ✅
 const appId = 'harrison-daily-v1'; // Kimlik kartı burada ✅
-const apiKey = 'AIzaSyAD6PN0OdV0CLCs_T7OMJQSYqKewgRr4WE'; // Anahtar burada ✅
+const apiKeyG = 'AIzaSyAD6PN0OdV0CLCs_T7OMJQSYqKewgRr4WE'; // Anahtar burada ✅
 
 const CATEGORIES = [
   'Tümü',
@@ -200,7 +200,7 @@ const generateMedicalContent = async (category, specificTopic = null) => {
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKeyG}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -287,7 +287,7 @@ const generateDifferentialDiagnosis = async (articleContent) => {
   )}`;
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKeyG}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -308,7 +308,7 @@ const askGeminiAboutCase = async (articleContent, question) => {
   )}. Soru: "${question}". Kısa, net cevapla.`;
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKeyG}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
