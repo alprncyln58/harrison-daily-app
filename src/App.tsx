@@ -98,20 +98,23 @@ import {
 // --- 1. KONFIGURASYON VE SABİTLER ---
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: 'harrison-daily.firebaseapp.com',
-  projectId: 'harrison-daily',
-  storageBucket: 'harrison-daily.appspot.com',
-  messagingSenderId: '783908745616',
-  appId: '1:783908745616:web:7197ff9f5d14c85f7b8315',
-  measurementId: 'G-BV9073R0LM',
+  apiKey: "AIzaSyAuR87uUfc3a5Jm1B3JkYp5JB9rAQkG7XA",
+  authDomain: "harrison-daily.firebaseapp.com",
+  projectId: "harrison-daily",
+  storageBucket: "harrison-daily.appspot.com",
+  messagingSenderId: "783908745616",
+  appId: "1:783908745616:web:7197ff9f5d14c85f7b8315",
+  measurementId: "G-BV9073R0LM"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth(app); // Memur burada ✅
-const appId = 'harrison-daily-v1'; // Kimlik kartı burada ✅
-const apiKeyG = 'AIzaSyAD6PN0OdV0CLCs_T7OMJQSYqKewgRr4WE'; // Anahtar burada ✅
+const auth = getAuth(app);
+const appId = 'harrison-daily-v1'; 
+
+// 2. YAPAY ZEKA ANAHTARI (DİKKAT: İsmi 'apiKey' olmalı!)
+// Buraya AI Studio'dan aldığın o sonu ...r4WE ile biten doğru anahtarı yapıştır:
+const apiKey = "AIzaSyAD6PN0OdV0CLCs_T7OMJQSYqKewgRr4WE";
 
 const CATEGORIES = [
   'Tümü',
@@ -200,7 +203,7 @@ const generateMedicalContent = async (category, specificTopic = null) => {
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKeyG}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -287,7 +290,7 @@ const generateDifferentialDiagnosis = async (articleContent) => {
   )}`;
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKeyG}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -308,7 +311,7 @@ const askGeminiAboutCase = async (articleContent, question) => {
   )}. Soru: "${question}". Kısa, net cevapla.`;
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKeyG}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
