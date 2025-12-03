@@ -68,20 +68,37 @@ const SafeRender = ({ content }) => {
     if (typeof content === 'object') return <span>{JSON.stringify(content)}</span>;
     return null;
 };
-
-// --- AI FONKSİYONLARI ---
+//https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}
+// --- YENİLENMİŞ AI FONKSİYONU ---
 
 const generateMedicalContent = async (category, specificTopic = null) => {
   const validCategories = CATEGORIES.filter(c => c !== "Tümü").join(", ");
   const selectedCategory = category === "Tümü" ? `Aşağıdaki listeden rastgele bir kategori seç: [${validCategories}]` : category;
-  const focusAreas = ["Nadir sendrom", "Acil tablo", "Sinsi hastalık", "Kompleks patogenez", "TUS spot bilgi", "Eponim bulgu", "Güncel tedavi"];
+  
+  // Rastgelelik için Alfabe Ruleti:
+  const alphabet = "ABCDEFGHIKLMNOPRSTUVYZ";
+  const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
+  
+  const focusAreas = [
+      "Nadir görülen bir sendrom", 
+      "Tanısı zor koyulan bir vaka", 
+      "Atipik prezentasyon gösteren bir hastalık", 
+      "Acil serviste gözden kaçabilecek bir tablo", 
+      "Mekanizması kompleks bir otoimmün hastalık",
+      "TUS sınavında az sorulan ama önemli bir detay",
+      "Harrison kitabında 'Clinical Pearls' olarak geçen bir durum"
+  ];
   const randomFocus = focusAreas[Math.floor(Math.random() * focusAreas.length)];
 
   let taskDescription = "";
   if (specificTopic && specificTopic.trim() !== "") {
       taskDescription = `GÖREV: "${specificTopic}" konusu hakkında Harrison referanslı, kapsamlı bir hastalık/vaka kartı hazırla. Kategori: [${validCategories}].`;
   } else {
-      taskDescription = `GÖREV: "${selectedCategory}" alanından rastgele bir hastalık seç. ODAK NOKTASI: "${randomFocus}".`;
+      // BURAYI GÜÇLENDİRDİK:
+      taskDescription = `GÖREV: "${selectedCategory}" alanından rastgele bir hastalık seç.
+      ÖNEMLİ KURAL: Asla 'Akut Pankreatit', 'Pnömoni', 'Kalp Yetmezliği' veya 'Diyabet' gibi çok yaygın konuları SEÇME.
+      Bunun yerine, "${randomLetter}" harfi ile başlayan veya "${randomFocus}" özelliğine sahip daha spesifik ve farklı bir hastalık seçmeni istiyorum.
+      Her seferinde mutlaka farklı bir konu seç.`;
   }
 
   const prompt = `Sen uzman bir Dahiliye asistanısın. Harrison referanslı içerik üret. ${taskDescription}
@@ -92,9 +109,18 @@ const generateMedicalContent = async (category, specificTopic = null) => {
   }`;
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            contents: [{ parts: [{ text: prompt }] }],
+            // BURASI YENİ: Yaratıcılık ayarını (Temperature) yükselttik
+            generationConfig: {
+                temperature: 1.2, // Yüksek yaratıcılık (0.0 - 2.0 arası)
+                topK: 40,
+                topP: 0.95,
+            }
+        })
     });
     if (!response.ok) throw new Error('API Error');
     const data = await response.json();
