@@ -111,7 +111,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app); // Memur burada ✅
 const appId = 'harrison-daily-v1'; // Kimlik kartı burada ✅
-const apiKey = 'AIzaSyA1kPDNIG9vfWgzy3G8QH7SKnfR3UTiEUA'; // Anahtar burada ✅
+const apiKey = 'AIzaSyAD6PN0OdV0CLCs_T7OMJQSYqKewgRr4WE'; // Anahtar burada ✅
 
 const CATEGORIES = [
   'Tümü',
