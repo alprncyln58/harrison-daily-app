@@ -92,7 +92,7 @@ const generateMedicalContent = async (category, specificTopic = null) => {
   }`;
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
     });
@@ -113,7 +113,7 @@ const generateMedicalContent = async (category, specificTopic = null) => {
 const generateQuizQuestion = async (topicTitle, topicContent) => {
   const prompt = `Konu: ${topicTitle}. İçerik: ${JSON.stringify(topicContent)}. TUS formatında zor bir soru hazırla. JSON: { "question": "...", "options": ["A)...", "B)...", "C)...", "D)...", "E)..."], "correctAnswer": 0, "explanation": "..." }`;
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
     });
@@ -130,7 +130,7 @@ const generateQuizQuestion = async (topicTitle, topicContent) => {
 
 const generateMedicalImage = async (prompt) => {
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ instances: [{ prompt: `Medical illustration: ${prompt}. High detail.` }], parameters: { sampleCount: 1, aspectRatio: "4:3" } })
     });
@@ -143,7 +143,7 @@ const generateMedicalImage = async (prompt) => {
 const generateDifferentialDiagnosis = async (articleContent) => {
   const prompt = `Sen kıdemli bir Dahiliye hocasısın. Aşağıdaki klinik vakayı analiz et ve Harrison'a dayanarak en olası 3 ayırıcı tanıyı belirle. HTML listesi olarak döndür. Vaka: ${JSON.stringify(articleContent)}`;
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
     });
@@ -156,7 +156,7 @@ const generateDifferentialDiagnosis = async (articleContent) => {
 const askGeminiAboutCase = async (articleContent, question) => {
   const prompt = `Sen bir Tıp hocasısın. Vaka: ${JSON.stringify(articleContent)}. Soru: "${question}". Kısa, net cevapla.`;
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
     });
