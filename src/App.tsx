@@ -7,7 +7,9 @@ import {
   Image as ImageIcon, Microscope, FileBarChart, Loader2, Calendar, Palette, Type,
   Bookmark, PlayCircle, StopCircle, Brain, Pencil, MailCheck, List, BarChart2, Globe,
   Ban, UserCheck, Share2, Eye, Moon, Sun, TrendingUp, Book, Zap, PauseCircle, Play,
-  Lightbulb, MessageSquare, Award, GraduationCap, Star, Hash
+  Lightbulb, MessageSquare, Award, GraduationCap, Star, Hash, 
+  // YENİ EKLENENLER:
+  CheckSquare, Square, LayoutList, Grid, Check
 } from 'lucide-react';
 import { initializeApp } from 'firebase/app';
 import { 
@@ -967,6 +969,104 @@ const ReportsPanel = ({ reports, onResolve }) => (
     </div>
 );
 
+// --- YENİ GELİŞMİŞ YÖNETİM PANELİ ---
+const AdminContentPanel = ({ articles, onDelete, onVerify, isDarkMode }) => {
+  const [selectedIds, setSelectedIds] = useState([]);
+
+  // Tümünü Seç / Kaldır
+  const toggleSelectAll = () => {
+    if (selectedIds.length === articles.length) setSelectedIds([]);
+    else setSelectedIds(articles.map(a => a.id));
+  };
+
+  // Tekli Seç
+  const toggleSelect = (id) => {
+    if (selectedIds.includes(id)) setSelectedIds(selectedIds.filter(sid => sid !== id));
+    else setSelectedIds([...selectedIds, id]);
+  };
+
+  // Toplu İşlemler
+  const handleBulkDelete = () => {
+    if (confirm(`${selectedIds.length} adet içerik silinecek. Emin misin?`)) {
+      selectedIds.forEach(id => onDelete(id)); // Tek tek silme fonksiyonunu çağırır
+      setSelectedIds([]);
+    }
+  };
+
+  const handleBulkVerify = () => {
+    selectedIds.forEach(id => {
+       const article = articles.find(a => a.id === id);
+       if (article) onVerify(article); 
+    });
+    setSelectedIds([]);
+  };
+
+  return (
+    <div className={`rounded-xl border overflow-hidden ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+      {/* Üst Bar: Aksiyonlar */}
+      {selectedIds.length > 0 && (
+        <div className="p-4 bg-blue-50 border-b border-blue-100 flex items-center justify-between animate-in fade-in">
+           <span className="text-sm font-bold text-blue-800">{selectedIds.length} öğe seçildi</span>
+           <div className="flex gap-2">
+              <button onClick={handleBulkVerify} className="flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white rounded-lg text-xs font-bold hover:bg-green-700">
+                 <Shield size={14}/> Toplu Onayla
+              </button>
+              <button onClick={handleBulkDelete} className="flex items-center gap-2 px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-700">
+                 <Trash2 size={14}/> Toplu Sil
+              </button>
+           </div>
+        </div>
+      )}
+
+      {/* Tablo */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className={isDarkMode ? 'bg-gray-700' : 'bg-gray-50'}>
+            <tr>
+              <th className="px-6 py-3 text-left">
+                <button onClick={toggleSelectAll} className={isDarkMode ? 'text-gray-400' : 'text-gray-500'}>
+                  {selectedIds.length === articles.length && articles.length > 0 ? <CheckSquare size={20}/> : <Square size={20}/>}
+                </button>
+              </th>
+              <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Başlık</th>
+              <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Kategori</th>
+              <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Durum</th>
+              <th className={`px-6 py-3 text-right text-xs font-medium uppercase tracking-wider ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Tarih</th>
+            </tr>
+          </thead>
+          <tbody className={`divide-y ${isDarkMode ? 'divide-gray-700' : 'divide-gray-200'}`}>
+            {articles.map((article) => (
+              <tr key={article.id} className={selectedIds.includes(article.id) ? (isDarkMode ? 'bg-blue-900/20' : 'bg-blue-50') : ''}>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <button onClick={() => toggleSelect(article.id)} className={selectedIds.includes(article.id) ? 'text-blue-600' : (isDarkMode ? 'text-gray-600' : 'text-gray-400')}>
+                    {selectedIds.includes(article.id) ? <CheckSquare size={20}/> : <Square size={20}/>}
+                  </button>
+                </td>
+                <td className="px-6 py-4">
+                  <div className={`text-sm font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{article.title}</div>
+                </td>
+                <td className="px-6 py-4">
+                  <span className={`px-2 py-1 text-xs rounded-full border ${isDarkMode ? 'bg-gray-700 border-gray-600 text-gray-300' : 'bg-gray-100 border-gray-200 text-gray-600'}`}>
+                    {article.category}
+                  </span>
+                </td>
+                <td className="px-6 py-4">
+                   {article.isVerified 
+                     ? <span className="flex items-center gap-1 text-xs font-bold text-green-600"><Shield size={12}/> Onaylı</span> 
+                     : <span className="text-xs text-gray-400">Taslak</span>}
+                </td>
+                <td className={`px-6 py-4 text-right text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {formatDate(article.date)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
 // --- RESTORED & PROFESSIONAL PROFILE VIEW ---
 const ProfileView = ({ user, articles, onEditProfile, isDarkMode }) => {
   const [activeTab, setActiveTab] = useState('bookmarks');
@@ -1164,6 +1264,7 @@ export default function App() {
   const [users, setUsers] = useState([]); 
   const [isGenerating, setIsGenerating] = useState(false);
   const [isAutoGenerating, setIsAutoGenerating] = useState(false);
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' veya 'table'
   const [expandedArticleId, setExpandedArticleId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("Tümü");
   const [currentUser, setCurrentUser] = useState(null); 
@@ -1426,15 +1527,21 @@ export default function App() {
     });
   };
 
-  const handleDeleteArticle = async (articleId) => {
-    setConfirmModal({
-      isOpen: true, message: "İçeriği kalıcı olarak silmek istiyor musunuz?",
-      onConfirm: async () => {
+  const handleDeleteArticle = async (articleId, skipConfirm = false) => {
+    const doDelete = async () => {
         await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'articles', articleId));
-        showNotification("Silindi", "info");
-      }
-    });
-  };
+        showNotification("İçerik Silindi", "info");
+    };
+
+    if (skipConfirm) {
+        doDelete();
+    } else {
+        setConfirmModal({
+            isOpen: true, message: "İçeriği kalıcı olarak silmek istiyor musunuz?",
+            onConfirm: doDelete
+        });
+    }
+};
 
   const handleEditClick = (article) => { setEditingArticle(article); setIsEditModalOpen(true); };
 
@@ -1507,22 +1614,56 @@ export default function App() {
                 </div>
              </div>
           )}
-          {activeTab === 'articles' && (
-             <div className="max-w-3xl mx-auto">
-                <div className="flex justify-between items-center mb-6"><h2 className="text-2xl font-bold">Arşiv</h2>{currentUser?.role === 'admin' && <button onClick={() => setActiveTab('generator')} className="bg-blue-600 text-white px-4 py-2 rounded-lg flex gap-2"><Plus size={20}/> Üret</button>}</div>
-                <input type="text" className={`w-full pl-4 pr-4 py-3 border rounded-xl mb-6 ${isDarkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white'}`} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Ara..." />
-                <div className="flex gap-2 overflow-x-auto pb-4 mb-4">{CATEGORIES.map(c => <button key={c} onClick={() => setSelectedCategory(c)} className={`px-4 py-2 rounded-full whitespace-nowrap text-sm border ${selectedCategory === c ? 'bg-blue-600 text-white' : (isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white')}`}>{c}</button>)}</div>
-                {filteredArticles.map(article => (
-                      <ArticleCard key={article.id} article={article} expanded={expandedArticleId === article.id} toggleExpand={() => setExpandedArticleId(expandedArticleId === article.id ? null : article.id)} 
-                          onLike={() => handleLike(article.id)} onComment={handleComment} onReply={handleReply} onDeleteComment={handleDeleteComment} 
-                          onDelete={handleDeleteArticle} onEdit={handleEditClick} onReport={openReportModal} 
-                          onBookmark={() => handleBookmark(article.id)} onQuiz={handleGenerateQuiz} onViewProfile={handleViewProfile}
-                          onShare={handleShare} onVerify={handleVerifyContent} onView={handleViewIncrement} 
-                          currentUser={currentUser} onLoginRequest={() => setIsLoginModalOpen(true)} fontSize={settings.fontSize} isDarkMode={isDarkMode} 
-                      />
-                ))}
-             </div>
-          )}
+          
+{activeTab === 'articles' && (
+    <div className="max-w-4xl mx-auto">
+    <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+        <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Arşiv</h2>
+        
+        <div className="flex items-center gap-2">
+            {/* Görünüm Değiştirici Butonlar */}
+            <div className={`flex p-1 rounded-lg border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+                <button onClick={() => setViewMode('grid')} className={`p-2 rounded-md transition-all ${viewMode === 'grid' ? (isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900') : 'text-gray-400'}`} title="Kart Görünümü"><Grid size={18}/></button>
+                <button onClick={() => setViewMode('table')} className={`p-2 rounded-md transition-all ${viewMode === 'table' ? (isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900') : 'text-gray-400'}`} title="Liste Görünümü (Yönetim)"><LayoutList size={18}/></button>
+            </div>
+
+            {currentUser?.role === 'admin' && (
+                <button onClick={() => setActiveTab('generator')} className="bg-blue-600 text-white px-4 py-2 rounded-lg flex gap-2 text-sm font-bold shadow-md hover:bg-blue-700">
+                    <Plus size={18}/> <span className="hidden sm:inline">Yeni Üret</span>
+                </button>
+            )}
+        </div>
+    </div>
+
+    <input type="text" className={`w-full pl-4 pr-4 py-3 border rounded-xl mb-6 ${isDarkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white'}`} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Vaka veya hastalık ara..." />
+    
+    <div className="flex gap-2 overflow-x-auto pb-4 mb-4 scrollbar-hide">
+        {CATEGORIES.map(c => <button key={c} onClick={() => setSelectedCategory(c)} className={`px-4 py-2 rounded-full whitespace-nowrap text-sm border transition-all ${selectedCategory === c ? 'bg-blue-600 text-white border-blue-600' : (isDarkMode ? 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50')}`}>{c}</button>)}
+    </div>
+
+    {/* GÖRÜNÜM MODUNA GÖRE DEĞİŞEN İÇERİK */}
+    {viewMode === 'table' && currentUser?.role === 'admin' ? (
+        <AdminContentPanel 
+            articles={filteredArticles} 
+            onDelete={(id) => handleDeleteArticle(id, true)} // true = onay sormadan sil (toplu silme onayı zaten var)
+            onVerify={handleVerifyContent} 
+            isDarkMode={isDarkMode} 
+        />
+    ) : (
+        <div className="space-y-6">
+            {filteredArticles.map(article => (
+                <ArticleCard key={article.id} article={article} expanded={expandedArticleId === article.id} toggleExpand={() => setExpandedArticleId(expandedArticleId === article.id ? null : article.id)} 
+                    onLike={() => handleLike(article.id)} onComment={handleComment} onReply={handleReply} onDeleteComment={handleDeleteComment} 
+                    onDelete={() => handleDeleteArticle(article.id)} onEdit={handleEditClick} onReport={openReportModal} 
+                    onBookmark={() => handleBookmark(article.id)} onQuiz={handleGenerateQuiz} onViewProfile={handleViewProfile}
+                    onShare={handleShare} onVerify={handleVerifyContent} onView={handleViewIncrement} 
+                    currentUser={currentUser} onLoginRequest={() => setIsLoginModalOpen(true)} fontSize={settings.fontSize} isDarkMode={isDarkMode} 
+                />
+            ))}
+        </div>
+    )}
+    </div>
+)}
           {activeTab === 'settings' && currentUser?.role === 'admin' && <SettingsView settings={settings} setSettings={setSettings} isDarkMode={isDarkMode} />}
           {activeTab === 'generator' && currentUser?.role === 'admin' && <GeneratorPanel onGenerate={handleGenerate} isGenerating={isGenerating} dailyLimit={settings.dailyLimit} currentCount={articles.filter(a => new Date(a.date).toDateString() === new Date().toDateString()).length} isAutoGenerating={isAutoGenerating} toggleAutoGenerate={toggleAutoGenerate} />}
           {activeTab === 'users' && currentUser?.role === 'admin' && <UsersPanel users={users} onBan={handleBanUser} isDarkMode={isDarkMode} />}
