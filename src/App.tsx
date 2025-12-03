@@ -130,7 +130,7 @@ const generateQuizQuestion = async (topicTitle, topicContent) => {
 
 const generateMedicalImage = async (prompt) => {
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:predict?key=${apiKey}`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ instances: [{ prompt: `Medical illustration: ${prompt}. High detail.` }], parameters: { sampleCount: 1, aspectRatio: "4:3" } })
     });
