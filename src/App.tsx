@@ -29,7 +29,7 @@ const firebaseConfig = {
   projectId: "harrison-daily",
   storageBucket: "harrison-daily.firebasestorage.app",
   messagingSenderId: "783908745616",
-  appId: "1:783908745616:web:7197ff9f5d14c85f7b8315",
+  appId: "AIzaSyA9SkM0tdRaVYoOGgFkmLxCb0yPj30hw7o",
   measurementId: "G-BV9073R0LM"
 };
 const app = initializeApp(firebaseConfig);
