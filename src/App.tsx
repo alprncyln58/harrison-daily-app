@@ -29,14 +29,14 @@ const firebaseConfig = {
   projectId: "harrison-daily",
   storageBucket: "harrison-daily.firebasestorage.app",
   messagingSenderId: "783908745616",
-  appId: "AIzaSyA9SkM0tdRaVYoOGgFkmLxCb0yPj30hw7o",
+  appId: "1:783908745616:web:7197ff9f5d14c85f7b8315",
   measurementId: "G-BV9073R0LM"
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'harrison-daily-stable-v55'; 
-const apiKey = "AIzaSyDh7S2O3YPh4X7ex9D_FF5PLxvUeKTJqqM"; // API Key environment tarafından sağlanır
+const apiKey = "AIzaSyA9SkM0tdRaVYoOGgFkmLxCb0yPj30hw7o"; // API Key environment tarafından sağlanır
 
 const CATEGORIES = [
   "Tümü", "Kardiyoloji", "Göğüs Hastalıkları", "Enfeksiyon Hastalıkları",
