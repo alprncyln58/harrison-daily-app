@@ -36,7 +36,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'harrison-daily-stable-v55'; 
-const apiKey = "AIzaSyDInmUDZYelX3sJLXiIwcVl-VIgvOhleTM"; // API Key environment tarafından sağlanır
+const apiKey = "AIzaSyB2Appb5YbP-jGFvV6ZTgtdGS4E7qTM_rI"; // API Key environment tarafından sağlanır
 
 const CATEGORIES = [
   "Tümü", "Kardiyoloji", "Göğüs Hastalıkları", "Enfeksiyon Hastalıkları",
