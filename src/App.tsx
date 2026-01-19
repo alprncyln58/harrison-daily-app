@@ -697,7 +697,7 @@ const ArticleCard = ({ article, expanded, toggleExpand, onLike, onComment, onRep
                    </button>
                    
                    <button onClick={(e) => { e.stopPropagation(); onQuiz(article); }} className="flex items-center gap-2 px-5 py-2.5 bg-purple-600 text-white text-sm font-bold rounded-xl hover:bg-purple-700 shadow-md transition-all">
-                      <Brain size={18}/> TUS Sorusu Çöz
+                      <Brain size={18}/> Soru Çöz
                    </button>
               </div>
 
