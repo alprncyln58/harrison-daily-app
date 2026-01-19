@@ -688,7 +688,7 @@ const ArticleCard = ({ article, expanded, toggleExpand, onLike, onComment, onRep
                {/* AI ACTIONS BAR */}
               <div className="flex flex-wrap gap-3 justify-end mb-4">
                    <button onClick={(e) => { e.stopPropagation(); setShowChat(!showChat); }} className={`flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-xl transition-all ${showChat ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
-                      <MessageSquare size={18}/> {showChat ? "Asistanı Gizle" : "Hocaya Sor"}
+                      <MessageSquare size={18}/> {showChat ? "Asistanı Gizle" : "Asistana soru sor"}
                    </button>
 
                    <button onClick={(e) => { e.stopPropagation(); handleGetDiffDx(); }} disabled={isGeneratingDx} className={`flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-xl transition-all ${diffDx ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700 hover:bg-orange-200'}`}>
